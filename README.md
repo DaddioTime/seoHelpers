@@ -15,6 +15,7 @@
      - Replacing spaces with dashes.
      - Converting to lowercase.
    - Ensures diacritics (e.g., ä, é) are removed for clean slugs.
+   - **Test it here**: [Slugify Tool](https://seohelpers.netlify.app/slugify/)
 
 2. **Meta Title & Description Checker**
    - Tracks the character and pixel length of:
@@ -22,3 +23,4 @@
      - Meta descriptions (up to 920px).
    - Provides warnings for over-optimized or too-long content.
    - Offers a Google-style preview for meta tags.
+   - **Test it here**: [Meta Title & Description Checker](https://seohelpers.netlify.app/meta-checker/)
