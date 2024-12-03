@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slugify Tool</title>
+    <style>
+        /* General styling for body to center content and set basic look */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        /* Container for the main content */
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        /* Styling for the header text */
+        h1 {
+            font-size: 2em;
+            color: #444;
+            text-align: center;
+        }
+        /* Label styling to enhance text input area */
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        /* Textarea styling to match the design aesthetics */
+        textarea {
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-bottom: 20px;
+            resize: none;
+        }
+        /* Styling for the button to generate the slug */
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        /* Change button color on hover to indicate interactivity */
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Styling for the generated slug output section */
+        h3 {
+            margin-top: 30px;
+            font-size: 1.5em;
+            color: #444;
+        }
+        /* Styling for the slug output to make it distinct */
+        #slug-output {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1.2em;
+            word-break: break-word;
+            width: 100%;
+        }
+
+        /* Responsive adjustments for mobile devices */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            button {
+                font-size: 1em;
+                padding: 10px 15px;
+            }
+            .container {
+                padding: 20px; /* Reduced padding for smaller screens */
+            }
+        }
+    </style>
+    <script>
+        // Function to convert text into a URL-friendly slug
+        function slugify(text) {
+            if (typeof text !== 'string') {
+                return ''; // Handle non-string inputs gracefully
+            }
+            // Normalize text to remove diacritical marks (e.g., é, ä, ö, ü, etc.)
+            text = text.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
+            // Remove all non-alphanumeric characters except spaces and hyphens
+            text = text.replace(/[^a-zA-Z0-9\s-]/g, '');
+            // Trim whitespace, replace spaces with hyphens, and convert to lowercase
+            text = text.trim().replace(/\s+/g, '-');
+            return text.toLowerCase();
+        }
+
+        // Function to handle slug generation on button click
+        function generateSlug() {
+            const inputText = document.getElementById("text").value;
+            const slug = slugify(inputText);
+            document.getElementById("slug-output").value = slug;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Slugify Text to URL</h1>
+        <label for="text">Enter your text:</label>
+        <textarea id="text" placeholder="Enter your text here..."></textarea>
+        <button onclick="generateSlug()">Slugify</button>
+        <h3>Generated Slug:</h3>
+        <input type="text" id="slug-output" readonly>
+    </div>
+</body>
+</html>

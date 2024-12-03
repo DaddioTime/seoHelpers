@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Title & Description Checker with Pixel Length</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 95%;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #0073e6;
+        }
+        .character-info {
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+        .character-info span {
+            font-weight: bold;
+        }
+        .valid {
+            color: green;
+        }
+        .warning {
+            color: orange;
+        }
+        .invalid {
+            color: red;
+        }
+        .preview {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .google-preview p {
+            margin: 5px 0;
+        }
+        .preview-title {
+            color: #1a0dab;
+            font-size: 1.2rem;
+        }
+        .preview-url {
+            color: #006621;
+        }
+        .preview-description {
+            color: #545454;
+        }
+        .progress-bar {
+            height: 8px;
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            width: 0%;
+            background-color: green;
+            transition: width 0.3s, background-color 0.3s;
+        }
+        .accordion {
+            margin-top: 20px;
+        }
+        .accordion-item {
+            margin-bottom: 10px;
+        }
+        .accordion-header {
+            font-weight: bold;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            text-align: left;
+        }
+        .accordion-content {
+            max-height: 0;
+            padding: 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: left;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+        .accordion-content.open {
+            max-height: 500px;
+            padding: 10px;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            .preview-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Meta Title & Description Length Checker</h1>
+        <div class="input-group">
+            <label for="url">Page URL</label>
+            <input type="text" id="url" oninput="updateUrlMetrics()" placeholder="https://example.com">
+            <p id="url-info" class="character-info">Characters: <span id="url-count">0</span> / 75</p>
+            <div class="progress-bar"><div id="url-progress" class="progress-bar-inner"></div></div>
+        </div>
+        <div class="input-group">
+            <label for="title">Meta Title</label>
+            <input type="text" id="title" oninput="updateTitleMetrics()">
+            <p id="title-info" class="character-info">Characters: <span id="title-count">0</span> / 60, Pixels: <span id="title-pixels">0</span> / 580 px</p>
+            <div class="progress-bar"><div id="title-progress" class="progress-bar-inner"></div></div>
+        </div>
+        <div class="input-group">
+            <label for="description">Meta Description</label>
+            <textarea id="description" oninput="updateDescriptionMetrics()"></textarea>
+            <p id="description-info" class="character-info">Characters: <span id="description-count">0</span> / 160, Pixels: <span id="description-pixels">0</span> / 920 px</p>
+            <div class="progress-bar"><div id="description-progress" class="progress-bar-inner"></div></div>
+        </div>
+        <div class="preview">
+            <h2>Google Search Preview</h2>
+            <div class="google-preview">
+                <p id="preview-url" class="preview-url">www.example.com</p>
+                <p id="preview-title" class="preview-title">Your Title Here</p>
+                <p id="preview-description" class="preview-description">Your meta description will appear here...</p>
+            </div>
+        </div>
+        <div class="accordion">
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordionContent(this)" aria-expanded="false">What is this tool?</div>
+                <div class="accordion-content">This Meta Title and Description Checker is a free tool that helps you analyze and evaluate the length of webpage titles and meta descriptions in real time, providing a live preview of what they will look like in search results.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordionContent(this)" aria-expanded="false">Why are title tags important for SEO?</div>
+                <div class="accordion-content">Title tags are crucial for SEO because they give a precise summary of a webpage's content to both search engines and users. This helps improve relevance, user experience, and click-through rates, influencing the page's ranking for relevant search queries.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordionContent(this)" aria-expanded="false">Can title tags affect ranking?</div>
+                <div class="accordion-content">Yes, title tags are a ranking factor. Although their direct impact on rankings may be small, they play an essential role in conveying what the page is about to both users and search engines.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordionContent(this)" aria-expanded="false">Why are meta descriptions important for SEO?</div>
+                <div class="accordion-content">Meta descriptions help provide search engines and users with an overview of a page's content. A well-crafted meta description can lead to higher click-through rates, signaling to search engines that the content is relevant and valuable.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordionContent(this)" aria-expanded="false">How long should a meta description be?</div>
+                <div class="accordion-content">Meta descriptions should ideally be up to 920 pixels in width, which is about 158 characters. This ensures the description is informative enough without being truncated by search engines.</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        /**
+         * Calculates the pixel width of a given text string using a specified font style.
+         * Utilizes a canvas context for precise text measurement.
+         * 
+         * @param {string} text - The text to be measured.
+         * @param {string} font - The font style to be used for measurement.
+         * @returns {number} The pixel width of the text.
+         */
+        function getTextWidth(text, font) {
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            context.font = font;
+            return context.measureText(text).width;
+        }
+
+        /**
+         * Toggles the visibility of the accordion content when a header is clicked.
+         * 
+         * @param {HTMLElement} header - The header element that was clicked.
+         */
+        function toggleAccordionContent(header) {
+            const content = header.nextElementSibling;
+            const isOpen = content.classList.contains("open");
+            if (isOpen) {
+                content.classList.remove("open");
+                header.setAttribute("aria-expanded", "false");
+            } else {
+                content.classList.add("open");
+                header.setAttribute("aria-expanded", "true");
+            }
+        }
+
+        /**
+         * Updates the metrics for the page URL.
+         * Displays character count and updates the progress bar accordingly.
+         */
+        function updateUrlMetrics() {
+            const url = document.getElementById("url").value;
+            const urlCount = document.getElementById("url-count");
+            const urlProgress = document.getElementById("url-progress");
+
+            urlCount.textContent = url.length;
+
+            let progressPercentage = Math.min((url.length / 75) * 100, 100);
+            urlProgress.style.width = progressPercentage + "%";
+
+            if (url.length > 75) {
+                urlCount.parentElement.className = "character-info invalid";
+                urlProgress.style.backgroundColor = "red";
+            } else if (url.length > 60) {
+                urlCount.parentElement.className = "character-info warning";
+                urlProgress.style.backgroundColor = "orange";
+            } else {
+                urlCount.parentElement.className = "character-info";
+                urlProgress.style.backgroundColor = "green";
+            }
+        }
+
+        /**
+         * Updates the metrics for the meta title.
+         * Calculates character count and pixel width, adjusts the progress bar, and provides color-coded feedback.
+         * 
+         * @note The pixel width is adjusted by a factor of 1.43 to better match real-world tools.
+         */
+        function updateTitleMetrics() {
+            const title = document.getElementById("title").value;
+            const titleCount = document.getElementById("title-count");
+            const titlePixels = document.getElementById("title-pixels");
+            const previewTitle = document.getElementById("preview-title");
+            const titleProgress = document.getElementById("title-progress");
+
+            titleCount.textContent = title.length;
+            const pixelWidth = getTextWidth(title, "14px Roboto, Arial, sans-serif") * 1.43; // Adjusted factor to better match pixel width in comparison tools
+            titlePixels.textContent = Math.round(pixelWidth);
+
+            let progressPercentage = Math.min((pixelWidth / 580) * 100, 100);
+            titleProgress.style.width = progressPercentage + "%";
+
+            if (title.length > 60 || pixelWidth > 580) {
+                titleCount.parentElement.className = "character-info invalid";
+                titleProgress.style.backgroundColor = "red";
+            } else if (title.length > 50 || pixelWidth > 560) {
+                titleCount.parentElement.className = "character-info warning";
+                titleProgress.style.backgroundColor = "orange";
+            } else {
+                titleCount.parentElement.className = "character-info";
+                titleProgress.style.backgroundColor = "green";
+            }
+
+            previewTitle.textContent = title || "Your Title Here";
+        }
+
+        /**
+         * Updates the metrics for the meta description.
+         * Calculates character count and pixel width, adjusts the progress bar, and provides color-coded feedback.
+         * 
+         * @note The pixel width for meta description does not have an adjustment factor.
+         */
+        function updateDescriptionMetrics() {
+            const description = document.getElementById("description").value;
+            const descriptionCount = document.getElementById("description-count");
+            const descriptionPixels = document.getElementById("description-pixels");
+            const previewDescription = document.getElementById("preview-description");
+            const descriptionProgress = document.getElementById("description-progress");
+
+            descriptionCount.textContent = description.length;
+            const pixelWidth = getTextWidth(description, "14px Roboto, Arial, sans-serif"); // No adjustment factor for meta description
+            descriptionPixels.textContent = Math.round(pixelWidth);
+
+            let progressPercentage = Math.min((pixelWidth / 920) * 100, 100);
+            descriptionProgress.style.width = progressPercentage + "%";
+
+            if (description.length > 160 || pixelWidth > 920) {
+                descriptionCount.parentElement.className = "character-info invalid";
+                descriptionProgress.style.backgroundColor = "red";
+            } else if (description.length > 150 || pixelWidth > 900) {
+                descriptionCount.parentElement.className = "character-info warning";
+                descriptionProgress.style.backgroundColor = "orange";
+            } else {
+                descriptionCount.parentElement.className = "character-info";
+                descriptionProgress.style.backgroundColor = "green";
+            }
+
+            previewDescription.textContent = description || "Your meta description will appear here...";
+        }
+
+        /**
+         * Stores the input values in localStorage to persist them across page reloads.
+         */
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlInput = document.getElementById("url");
+            const titleInput = document.getElementById("title");
+            const descriptionInput = document.getElementById("description");
+
+            urlInput.value = localStorage.getItem("url") || "";
+            titleInput.value = localStorage.getItem("title") || "";
+            descriptionInput.value = localStorage.getItem("description") || "";
+
+            urlInput.addEventListener("input", () => localStorage.setItem("url", urlInput.value));
+            titleInput.addEventListener("input", () => localStorage.setItem("title", titleInput.value));
+            descriptionInput.addEventListener("input", () => localStorage.setItem("description", descriptionInput.value));
+        });
+    </script>
+</body>
+</html>
