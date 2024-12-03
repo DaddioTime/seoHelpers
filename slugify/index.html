@@ -1,13 +1,15 @@
+<!-- This is a simple web app for generating URL-friendly slugs from user input -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> <!-- Ensure the character set is UTF-8 to support a wide range of characters, which is ideal for international text input -->
+    <!-- This meta tag is important for responsive design, making the page display properly on both mobile and desktop -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slugify Tool</title>
     <style>
         /* General styling for body to center content and set basic look */
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif, sans-serif; /* Added fallback font 'sans-serif' */
             background-color: #f0f0f0;
             color: #333;
             display: flex;
@@ -101,6 +103,12 @@
             if (typeof text !== 'string') {
                 return ''; // Handle non-string inputs gracefully
             }
+            // Replace German umlauts and sharp s according to Google recommendations
+            text = text.replace(/ä/g, 'ae')
+                       .replace(/ö/g, 'oe')
+                       .replace(/ü/g, 'ue')
+                       .replace(/ß/g, 'ss');
+            
             // Normalize text to remove diacritical marks (e.g., é, ä, ö, ü, etc.)
             text = text.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
             // Remove all non-alphanumeric characters except spaces and hyphens
