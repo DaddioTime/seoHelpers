@@ -111,10 +111,14 @@
             
             // Normalize text to remove diacritical marks (e.g., é, ä, ö, ü, etc.)
             text = text.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
+            // Replace apostrophes with hyphen
+            text = text.replace(/'/g, '-');
             // Remove all non-alphanumeric characters except spaces and hyphens
             text = text.replace(/[^a-zA-Z0-9\s-]/g, '');
             // Trim whitespace, replace spaces with hyphens, and convert to lowercase
             text = text.trim().replace(/\s+/g, '-');
+            // Replace multiple consecutive hyphens with a single hyphen
+            text = text.replace(/-+/g, '-');
             return text.toLowerCase();
         }
 
