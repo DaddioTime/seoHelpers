@@ -111,8 +111,8 @@
             
             // Normalize text to remove diacritical marks (e.g., é, ä, ö, ü, etc.)
             text = text.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
-            // Replace apostrophes with hyphen
-            text = text.replace(/'/g, '-');
+            // Replace apostrophes, underscores, and periods with hyphens
+            text = text.replace(/['_.]/g, '-');
             // Remove all non-alphanumeric characters except spaces and hyphens
             text = text.replace(/[^a-zA-Z0-9\s-]/g, '');
             // Trim whitespace, replace spaces with hyphens, and convert to lowercase
