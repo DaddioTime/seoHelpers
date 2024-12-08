@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Optimize your SEO with real-time feedback on meta title and description length for better visibility." />
+    <meta name="keywords" content="SEO, meta title, meta description, length check, search engine optimisation">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meta Title & Description Length Checker</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,7 +15,7 @@
             display: flex;
             justify-content: center;
         }
-        .container {
+        main {
             width: 800px;
             max-width: 90%;
             background: #fff;
@@ -46,6 +47,7 @@
         input[type="text"]:focus,
         textarea:focus {
             border-color: #0073e6;
+            outline: none;
         }
         .character-info {
             margin-top: 5px;
@@ -111,6 +113,9 @@
             border-radius: 5px;
             text-align: left;
         }
+        .accordion-header[role="button"] {
+            outline: none;
+        }
         .accordion-content {
             max-height: 0;
             padding: 0;
@@ -136,7 +141,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <main>
         <h1>Meta Title & Description Length Checker</h1>
         <div class="input-group">
             <label for="url">Page URL</label>
@@ -164,29 +169,29 @@
                 <p id="preview-description" class="preview-description">Your meta description will appear here...</p>
             </div>
         </div>
-        <div class="accordion">
-            <div class="accordion-item">
-                <div class="accordion-header" onclick="toggleAccordionContent(this)" aria-expanded="false">What is this tool?</div>
-                <div class="accordion-content">This Meta Title and Description Checker is a free tool that helps you analyze and evaluate the length of webpage titles and meta descriptions in real time, providing a live preview of what they will look like in search results.</div>
-            </div>
-            <div class="accordion-item">
-                <div class="accordion-header" onclick="toggleAccordionContent(this)" aria-expanded="false">Why are title tags important for SEO?</div>
-                <div class="accordion-content">Title tags are crucial for SEO because they give a precise summary of a webpage's content to both search engines and users. This helps improve relevance, user experience, and click-through rates, influencing the page's ranking for relevant search queries.</div>
-            </div>
-            <div class="accordion-item">
-                <div class="accordion-header" onclick="toggleAccordionContent(this)" aria-expanded="false">Can title tags affect ranking?</div>
-                <div class="accordion-content">Yes, title tags are a ranking factor. Although their direct impact on rankings may be small, they play an essential role in conveying what the page is about to both users and search engines.</div>
-            </div>
-            <div class="accordion-item">
-                <div class="accordion-header" onclick="toggleAccordionContent(this)" aria-expanded="false">Why are meta descriptions important for SEO?</div>
-                <div class="accordion-content">Meta descriptions help provide search engines and users with an overview of a page's content. A well-crafted meta description can lead to higher click-through rates, signaling to search engines that the content is relevant and valuable.</div>
-            </div>
-            <div class="accordion-item">
-                <div class="accordion-header" onclick="toggleAccordionContent(this)" aria-expanded="false">How long should a meta description be?</div>
-                <div class="accordion-content">Meta descriptions should ideally be up to 920 pixels in width, which is about 158 characters. This ensures the description is informative enough without being truncated by search engines.</div>
-            </div>
-        </div>
-    </div>
+        <section class="accordion" aria-label="Frequently Asked Questions">
+            <article class="accordion-item">
+                <div class="accordion-header" role="button" tabindex="0" onclick="toggleAccordionContent(this)" aria-expanded="false" aria-controls="section1">What is this tool?</div>
+                <div class="accordion-content" id="section1">This Meta Title and Description Checker is a free tool that helps you analyze and evaluate the length of webpage titles and meta descriptions in real time, providing a live preview of what they will look like in search results.</div>
+            </article>
+            <article class="accordion-item">
+                <div class="accordion-header" role="button" tabindex="0" onclick="toggleAccordionContent(this)" aria-expanded="false" aria-controls="section2">Why are title tags important for SEO?</div>
+                <div class="accordion-content" id="section2">Title tags are crucial for SEO because they give a precise summary of a webpage's content to both search engines and users. This helps improve relevance, user experience, and click-through rates, influencing the page's ranking for relevant search queries.</div>
+            </article>
+            <article class="accordion-item">
+                <div class="accordion-header" role="button" tabindex="0" onclick="toggleAccordionContent(this)" aria-expanded="false" aria-controls="section3">Can title tags affect ranking?</div>
+                <div class="accordion-content" id="section3">Yes, title tags are a ranking factor. Although their direct impact on rankings may be small, they play an essential role in conveying what the page is about to both users and search engines.</div>
+            </article>
+            <article class="accordion-item">
+                <div class="accordion-header" role="button" tabindex="0" onclick="toggleAccordionContent(this)" aria-expanded="false" aria-controls="section4">Why are meta descriptions important for SEO?</div>
+                <div class="accordion-content" id="section4">Meta descriptions help provide search engines and users with an overview of a page's content. A well-crafted meta description can lead to higher click-through rates, signaling to search engines that the content is relevant and valuable.</div>
+            </article>
+            <article class="accordion-item">
+                <div class="accordion-header" role="button" tabindex="0" onclick="toggleAccordionContent(this)" aria-expanded="false" aria-controls="section5">How long should a meta description be?</div>
+                <div class="accordion-content" id="section5">Meta descriptions should ideally be up to 920 pixels in width, which is about 158 characters. This ensures the description is informative enough without being truncated by search engines.</div>
+            </article>
+        </section>
+    </main>
     <script>
         /**
          * Calculates the pixel width of a given text string using a specified font style.
@@ -205,6 +210,7 @@
 
         /**
          * Toggles the visibility of the accordion content when a header is clicked.
+         * Improves accessibility by using aria-expanded attribute.
          * 
          * @param {HTMLElement} header - The header element that was clicked.
          */
@@ -234,14 +240,15 @@
             let progressPercentage = Math.min((url.length / 75) * 100, 100);
             urlProgress.style.width = progressPercentage + "%";
 
+            const infoParent = urlCount.parentElement;
             if (url.length > 75) {
-                urlCount.parentElement.className = "character-info invalid";
+                infoParent.className = "character-info invalid";
                 urlProgress.style.backgroundColor = "red";
             } else if (url.length > 60) {
-                urlCount.parentElement.className = "character-info warning";
+                infoParent.className = "character-info warning";
                 urlProgress.style.backgroundColor = "orange";
             } else {
-                urlCount.parentElement.className = "character-info";
+                infoParent.className = "character-info";
                 urlProgress.style.backgroundColor = "green";
             }
         }
@@ -250,7 +257,7 @@
          * Updates the metrics for the meta title.
          * Calculates character count and pixel width, adjusts the progress bar, and provides color-coded feedback.
          * 
-         * @note The pixel width is adjusted by a factor of 1.43 to better match real-world tools.
+         * @note The pixel width is multiplied by a factor to approximate real-world measurements.
          */
         function updateTitleMetrics() {
             const title = document.getElementById("title").value;
@@ -260,20 +267,21 @@
             const titleProgress = document.getElementById("title-progress");
 
             titleCount.textContent = title.length;
-            const pixelWidth = getTextWidth(title, "14px Roboto, Arial, sans-serif") * 1.43; // Adjusted factor to better match pixel width in comparison tools
+            const pixelWidth = getTextWidth(title, "14px Arial, sans-serif") * 1.43;
             titlePixels.textContent = Math.round(pixelWidth);
 
             let progressPercentage = Math.min((pixelWidth / 580) * 100, 100);
             titleProgress.style.width = progressPercentage + "%";
 
+            const infoParent = titleCount.parentElement;
             if (title.length > 60 || pixelWidth > 580) {
-                titleCount.parentElement.className = "character-info invalid";
+                infoParent.className = "character-info invalid";
                 titleProgress.style.backgroundColor = "red";
             } else if (title.length > 50 || pixelWidth > 560) {
-                titleCount.parentElement.className = "character-info warning";
+                infoParent.className = "character-info warning";
                 titleProgress.style.backgroundColor = "orange";
             } else {
-                titleCount.parentElement.className = "character-info";
+                infoParent.className = "character-info";
                 titleProgress.style.backgroundColor = "green";
             }
 
@@ -283,8 +291,6 @@
         /**
          * Updates the metrics for the meta description.
          * Calculates character count and pixel width, adjusts the progress bar, and provides color-coded feedback.
-         * 
-         * @note The pixel width for meta description does not have an adjustment factor.
          */
         function updateDescriptionMetrics() {
             const description = document.getElementById("description").value;
@@ -294,20 +300,21 @@
             const descriptionProgress = document.getElementById("description-progress");
 
             descriptionCount.textContent = description.length;
-            const pixelWidth = getTextWidth(description, "14px Roboto, Arial, sans-serif"); // No adjustment factor for meta description
+            const pixelWidth = getTextWidth(description, "14px Arial, sans-serif");
             descriptionPixels.textContent = Math.round(pixelWidth);
 
             let progressPercentage = Math.min((pixelWidth / 920) * 100, 100);
             descriptionProgress.style.width = progressPercentage + "%";
 
+            const infoParent = descriptionCount.parentElement;
             if (description.length > 160 || pixelWidth > 920) {
-                descriptionCount.parentElement.className = "character-info invalid";
+                infoParent.className = "character-info invalid";
                 descriptionProgress.style.backgroundColor = "red";
             } else if (description.length > 150 || pixelWidth > 900) {
-                descriptionCount.parentElement.className = "character-info warning";
+                infoParent.className = "character-info warning";
                 descriptionProgress.style.backgroundColor = "orange";
             } else {
-                descriptionCount.parentElement.className = "character-info";
+                infoParent.className = "character-info";
                 descriptionProgress.style.backgroundColor = "green";
             }
 
