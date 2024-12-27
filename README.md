@@ -2,6 +2,8 @@
 
 **seoHelpers** is a set of tools designed to simplify and enhance your SEO workflow. Whether you're optimizing meta tags or generating SEO-friendly slugs, these utilities provide easy-to-use solutions for developers, content creators, and marketers.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5fa2e640-c111-4486-a3a3-f853cf56f651/deploy-status)](https://app.netlify.com/sites/seohelpers/deploys)
+
 ## Features
 
 - **Slugify Tool**: Easily convert text into SEO-friendly slugs.
